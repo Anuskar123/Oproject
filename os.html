@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSY2092 Linux Programming Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        pre {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .text-content {
+            line-height: 1.7;
+            text-align: left;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .placeholder-img {
+            width: 100%;
+            max-width: 600px;
+            height: 300px;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #4b5563;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+        }
+        .nav-button:hover {
+            transform: translateY(-2px);
+            background-color: #1e40af;
+        }
+        .nav-button.active {
+            background-color: #1e3a8a;
+            font-weight: bold;
+        }
+        .section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .section.active {
+            display: block;
+            opacity: 1;
+        }
+        footer a {
+            transition: color 0.3s ease;
+        }
+        footer a:hover {
+            color: #93c5fd;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <nav class="bg-blue-800 text-white p-6 shadow-lg sticky top-0 z-10">
+        <div class="container mx-auto">
+            <ul class="flex flex-wrap justify-center gap-6">
+                <li><button class="nav-button px-5 py-3 rounded-lg text-base font-medium bg-blue-600 active" onclick="showSection('home')">Home</button></li>
+                <li><button class="nav-button px-5 py-3 rounded-lg text-base font-medium bg-blue-600" onclick="showSection('area')">Area Calculator</button></li>
+                <li><button class="nav-button px-5 py-3 rounded-lg text-base font-medium bg-blue-600" onclick="showSection('prompt')">Bash Prompt</button></li>
+                <li><button class="nav-button px-5 py-3 rounded-lg text-base font-medium bg-blue-600" onclick="showSection('bonus')">Bonus Calculator</button></li>
+                <li><button class="nav-button px-5 py-3 rounded-lg text-base font-medium bg-blue-600" onclick="showSection('blackjack')">Blackjack Game</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 py-10 flex-grow">
+        <div id="home" class="section active text-content space-y-8">
+            <h1 class="text-5xl font-bold text-gray-900">CSY2092 Linux Programming Portfolio</h1>
+            <p class="text-lg text-gray-700">This portfolio presents the Linux programming assignment for CSY2092 Operating Systems, submitted by [Your Name], Student ID: [Your ID]. The assignment includes four tasks: a rectangle area calculator, a personalized bash prompt, a salesperson bonus calculator, and a Blackjack game. Each section below contains the program code, user guide, code description, flowchart, and testing evidence, formatted according to the assignment guidelines.</p>
+            <p class="text-lg text-gray-700">Submission Deadline: 1st September 2025</p>
+            <p class="text-lg text-gray-700">Module Tutor: Niresh Dhakal (<a href="mailto:niresh.dhakal@nami.edu.np" class="text-blue-600 hover:underline">niresh.dhakal@nami.edu.np</a>)</p>
+        </div>
+
+        <div id="area" class="section text-content space-y-8">
+            <h2 class="text-4xl font-bold text-gray-900">1. Rectangle Area Calculator (area.sh)</h2>
+            <h3 class="text-3xl font-semibold text-gray-800">1.1 User Guide</h3>
+            <p class="text-gray-700">
+                User Guide for area.sh<br>
+                This script calculates the area of a rectangle.<br>
+                1. Run './area.sh'.<br>
+                2. Enter width and height in centimeters when prompted.<br>
+                3. View area in cm² and in².<br>
+                4. Choose to display area in m² (y/n).<br>
+                5. Choose to continue or quit (y/n).<br>
+                Requirements: 'bc' for calculations.<br>
+                Outputs: Area in cm², in², and optionally m².
+            </p>
+            <h3 class="text-3xl font-semibold text-gray-800">1.2 Code Description</h3>
+            <p class="text-gray-700">
+                Description of area.sh<br>
+                The script prompts for width and height, validates inputs using regex, and calculates the area using 'bc'. It converts cm² to in² (1 cm² = 0.155 in²) and m² (1 m² = 10000 cm²). A loop allows multiple calculations. Functions 'validate_input' and 'calculate_area' ensure modularity.
+            </p>
+            <h3 class="text-3xl font-semibold text-gray-800">1.3 Program Code</h3>
+            <pre class="text-sm">
+#!/bin/bash
+# area.sh: Calculate rectangle area in cm² and in², with option to display in m².
+# Usage: ./area.sh
+# Inputs: Width and height in cm.
+# Outputs: Area in cm² and in² (or m² if chosen).
+# Assumptions: 'bc' and 'dialog' (optional) are installed.
+
+validate_input() {
+    local input=$1
+    if [[ ! $input =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+        echo "Error: Enter a valid number (integer or floating-point)."
+        exit 1
+    fi
+}
+
+calculate_area() {
+    local width=$1
+    local height=$2
+    area_cm=$(echo "$width * $height" | bc)
+    area_in=$(echo "$area_cm * 0.155" | bc)  # 1 cm² = 0.155 in²
+    area_m=$(echo "$area_cm / 10000" | bc)   # 1 m² = 10000 cm²
+}
+
+while true; do
+    echo "Enter width (cm):"
+    read width
+    validate_input "$width"
+
+    echo "Enter height (cm):"
+    read height
+    validate_input "$height"
+
+    calculate_area "$width" "$height"
+
+    echo "Area: $area_cm cm²"
+    echo "Area: $area_in in²"
+    echo "Display area in square meters? (y/n)"
+    read choice
+    if [[ $choice == "y" || $choice == "Y" ]]; then
+        echo "Area: $area_m m²"
+    fi
+
+    echo "Continue? (y/n)"
+    read cont
+    if [[ $cont != "y" && $cont != "Y" ]]; then
+        break
+    fi
+done
+            </pre>
+            <h3 class="text-3xl font-semibold text-gray-800">1.4 Flowchart</h3>
+            <p class="text-gray-700">Figure 1.1: Flowchart for area.sh</p>
+            <div class="placeholder-img">Area Flowchart Placeholder</div>
+            <p class="text-sm text-gray-600">Note: Replace with其實的流程圖圖片。</p>
+            <h3 class="text-3xl font-semibold text-gray-800">1.5 Testing Evidence</h3>
+            <p class="text-gray-700">Figure 1.2: Valid Input Test</p>
+            <div class="placeholder-img">Valid Input Test Placeholder</div>
+            <p class="text-gray-700">Figure 1.3: Invalid Input Test</p>
+            <div class="placeholder-img">Invalid Input Test Placeholder</div>
+            <p class="text-sm text-gray-600">Note: Replace with actual test output screenshots.</p>
+        </div>
+
+        <div id="prompt" class="section text-content space-y-8">
+            <h2 class="text-4xl font-bold text-gray-900">2. Personalized Bash Prompt</h2>
+            <h3 class="text-3xl font-semibold text-gray-800">2.1 User Guide</h3>
+            <p class="text-gray-700">
+                User Guide for Personalized Bash Prompt<br>
+                The personalized bash prompt displays the user's student ID, current directory, and a prompt symbol. To use:<br>
+                1. Edit ~/.bashrc.<br>
+                2. Add the line: PS1='[StudentID_\u] \w\$ '.<br>
+                3. Save and run 'source ~/.bashrc'.<br>
+                The prompt appears in all terminals and screenshots.
+            </p>
+            <h3 class="text3xl font-semibold text-gray-800">2.2 Configuration</h3>
+            <pre class="text-sm">PS1='[StudentID_\u] \w\$ '</pre>
+            <h3 class="text-3xl font-semibold text-gray-800">2.3 Testing Evidence</h3>
+            <p class="text-gray-700">Figure 2.1: Prompt Screenshot</p>
+            <div class="placeholder-img">Prompt Screenshot Placeholder</div>
+            <p class="text-sm text-gray-600">Note: Replace with actual screenshot.</p>
+        </div>
+
+        <div id="bonus" class="section text-content space-y-8">
+            <h2 class="text-4xl font-bold text-gray-900">3. Salesperson Bonus Calculator (bonus.sh)</h2>
+            <h3 class="text-3xl font-semibold text-gray-800">3.1 User Guide</h3>
+            <p class="text-gray-700">
+                User Guide for bonus.sh<br>
+                This script calculates bonuses and net salaries for car salespeople.<br>
+                1. Run './bonus.sh'.<br>
+                2. Enter month, number of salespeople (3–20), names, and models sold.<br>
+                3. Results are sorted by name and saved to 'sales_<month>.txt'.<br>
+                4. View the report on-screen and in the file.<br>
+                Requirements: 'bc' for calculations, write permissions.<br>
+                Outputs: Sorted list of names, sales, bonuses, net salaries.
+            </p>
+            <h3 class="text-3xl font-semibold text-gray-800">3.2 Code Description</h3>
+            <p class="text-gray-700">
+                Description of bonus.sh<br>
+                The script collects salesperson data, validates inputs, and calculates total sales, bonuses, and net salaries after tax. It uses 'bc' for calculations, stores data in an associative array, and sorts names using a bubble sort algorithm. Results are saved to a file and displayed.
+            </p>
+            <h3 class="text-3xl font-semibold text-gray-800">3.3 Program Code</h3>
+            <pre class="text-sm">
+#!/bin/bash
+# bonus.sh: Calculate car salesperson bonuses and net salaries.
+# Usage: ./bonus.sh
+# Inputs: Month, salesperson names, models sold.
+# Outputs: Sorted list of names, sales, bonuses,.analytics
+# Assumptions: 'bc' is installed, write permissions in current directory.
+
+validate_number() {
+    local input=$1
+    if [[ ! $input =~ ^[0-9]+$ ]]; then
+        echo "Error: Enter a valid integer."
+        exit 1
+    fi
+}
+
+calculate_bonus() {
+    local sales=$1
+    if [ $(echo "$sales >= 650000" | bc) -eq 1 ]; then
+        bonus=30000
+    elif [ $(echo "$sales >= 500000" | bc) -eq 1 ]; then
+        bonus=25000
+    elif [ $(echo "$sales >= 400000" | bc) -eq 1 ]; then
+        bonus=20000
+    elif [ $(echo "$sales >= 300000" | bc) -eq 1 ]; then
+        bonus=15000
+    elif [ $(echo "$sales >= 200000" | bc) -eq 1 ]; then
+        bonus=10000
+    else
+        bonus=0
+    fi
+    echo $bonus
+}
+
+calculate_tax() {
+    local salary=$1
+    local taxable=$((salary - 12500))
+    local tax=0
+    if [ $taxable -gt 0 ]; then
+        if [ $taxable -le 37500 ]; then
+            tax=$(echo "$taxable * 0.2" | bc)
+        else
+            tax=$(echo "37500 * 0.2" | bc)
+            tax=$(echo "$tax + ($taxable - 37500) * 0.4" | bc)
+        fi
+    fi
+    echo $tax
+}
+
+bubble_sort() {
+    local -n arr=$1
+    local n=${#arr[@]}
+    for ((i=0; i<n-1; i++)); do
+        for ((j=0; j<n-i-1; j++)); do
+            if [[ ${arr[j]} > ${arr[j+1]} ]]; then
+                temp=${arr[j]}
+                arr[j]=${arr[j+1]}
+                arr[j+1]=$temp
+            fi
+        done
+    done
+}
+
+echo "Enter month (e.g., January):"
+read month
+echo "Enter number of salespeople (3-20):"
+read num
+validate_number "$num"
+if [ $num -lt 3 ] || [ $num -gt 20 ]; then
+    echo "Error: Number of salespeople must be between 3 and 20."
+    exit 1
+fi
+
+declare -A sales_data
+for ((i=1; i<=num; i++)); do
+    echo "Enter salesperson $i name:"
+    read name
+    echo "Enter number of A-Class sold:"
+    read a_class
+    validate_number "$a_class"
+    echo "Enter number of B-Class sold:"
+    read b_class
+    validate_number "$b_class"
+    total_sales=$(echo "$a_class * 31095 + $b_class * 33162" | bc)  # Simplified
+    bonus=$(calculate_bonus $total_sales)
+    gross_salary=$((2000 + bonus))
+    tax=$(calculate_tax $gross_salary)
+    net_salary=$(echo "$gross_salary - $tax" | bc)
+    sales_data["$name"]="$total_sales,$bonus,$net_salary"
+done
+
+names=("${!sales_data[@]}")
+bubble_sort names
+
+output_file="sales_$month.txt"
+echo "Sales Report for $month" > $output_file
+for name in "${names[@]}"; do
+    IFS=',' read sales bonus net <<< "${sales_data[$name]}"
+    echo "$name: Sales=£$sales, Bonus=£$bonus, Net Salary=£$net" >> $output_file
+done
+
+cat $output_file
+            </pre>
+            <h3 class="text-3xl font-semibold text-gray-800">3.4 Flowchart</h3>
+            <p class="text-gray-700">Figure 3.1: Flowchart for bonus.sh</p>
+            <div class="placeholder-img">Bonus Flowchart Placeholder</div>
+            <p class="text-sm text-gray-600">Note: Replace with actual flowchart image.</p>
+            <h3 class="text-3xl font-semibold text-gray-800">3.5 Testing Evidence</h3>
+            <p class="text-gray-700">Figure 3.2: Valid Input Test</p>
+            <div class="placeholder-img">Valid Input Test Placeholder</div>
+            <p class="text-gray-700">Figure 3.3: Invalid Input Test</p>
+            <div class="placeholder-img">Invalid Input Test Placeholder</div>
+            <p class="text-sm text-gray-600">Note: Replace with actual test outputs.</p>
+        </div>
+
+        <div id="blackjack" class="section text-content space-y-8">
+            <h2 class="text-4xl font-bold text-gray-900">4. Blackjack Game (blackjack.sh)</h2>
+            <h3 class="text-3xl font-semibold text-gray-800">4.1 User Guide</h3>
+            <p class="text-gray-700">
+                User Guide for blackjack.sh<br>
+                This script simulates a Blackjack game.<br>
+                1. Run './blackjack.sh'.<br>
+                2. View dealer's face-up card and your hand.<br>
+                3. Choose to hit (h) or stand (s).<br>
+                4. Dealer plays automatically (hits below 17).<br>
+                5. View results and scores.<br>
+                6. Play again or quit.<br>
+                Outputs: Game results, running scores.
+            </p>
+            <h3 class="text-3xl font-semibold text-gray-800">4.2 Code Description</h3>
+            <p class="text-gray-700">
+                Description of blackjack.sh<br>
+                The script initializes a 52-card deck using an array, deals cards randomly, and removes them from the deck. Functions handle deck initialization, card dealing, and score calculation (aces as 1 or 11). The game follows Blackjack rules, with dealer hitting below 17. Scores are tracked across rounds.
+            </p>
+            <h3 class="text-3xl font-semibold text-gray-800">4.3 Program Code</h3>
+            <pre class="text-sm">
+#!/bin/bash
+# blackjack.sh: Play the Blackjack card game.
+# Usage: ./blackjack.sh
+# Inputs: Player actions (hit/stand).
+# Outputs: Game results, scores.
+# Assumptions: Random number generator works.
+
+init_deck() {
+    deck=("2H" "3H" "4H" "5H" "6H" "7H" "8H" "9H" "10H" "JH" "QH" "KH" "AH"
+          "2D" "3D" "4D" "5D" "6D" "7D" "8D" "9D" "10D" "JD" "QD" "KD" "AD"
+          "2C" "3C" "4C" "5C" "6C" "7C" "8C" "9C" "10C" "JC" "QC" "KC" "AC"
+          "2S" "3S" "4S" "5S" "6S" "7S" "8S" "9S" "10S" "JS" "QS" "KS" "AS")
+    deck_size=52
+}
+
+deal_card() {
+    local index=$((RANDOM % deck_size))
+    echo "${deck[index]}"
+    deck[index]=${deck[deck_size-1]}
+    ((deck_size--))
+}
+
+calculate_score() {
+    local hand=("$@")
+    local score=0
+    local aces=0
+    for card in "${hand[@]}"; do
+        value=${card%?}
+        if [[ $value == "A" ]]; then
+            ((aces++))
+        elif [[ $value == "J" || $value == "Q" || $value == "K" ]]; then
+            score=$((score + 10))
+        else
+            score=$((score + value))
+        fi
+    done
+    for ((i=0; i<aces; i++)); do
+        if [ $((score + 11)) -le 21 ]; then
+            score=$((score + 11))
+        else
+            score=$((score + 1))
+        fi
+    done
+    echo $score
+}
+
+init_deck
+player_score=0
+dealer_score=0
+while true; do
+    player_hand=()
+    dealer_hand=()
+    player_hand+=($(deal_card))
+    dealer_hand+=($(deal_card))
+    player_hand+=($(deal_card))
+    dealer_hand+=($(deal_card))
+
+    echo "Dealer's face-up card: ${dealer_hand[0]}"
+    echo "Your hand: ${player_hand[@]}"
+
+    while true; do
+        score=$(calculate_score "${player_hand[@]}")
+        echo "Your score: $score"
+        if [ $score -gt 21 ]; then
+            echo "Bust! You lose."
+            ((dealer_score++))
+            break
+        elif [ $score -eq 21 ]; then
+            echo "Blackjack!"
+            ((player_score++))
+            break
+        fi
+        echo "Hit or stand? (h/s)"
+        read action
+        if [[ $action == "s" ]]; then
+            break
+        elif [[ $action == "h" ]]; then
+            player_hand+=($(deal_card))
+            echo "Your hand: ${player_hand[@]}"
+        fi
+    done
+
+    dealer_score_val=$(calculate_score "${dealer_hand[@]}")
+    while [ $dealer_score_val -lt 17 ]; do
+        dealer_hand+=($(deal_card))
+        dealer_score_val=$(calculate_score "${dealer_hand[@]}")
+    done
+    echo "Dealer's hand: ${dealer_hand[@]}"
+    echo "Dealer's score: $dealer_score_val"
+
+    if [ $score -le 21 ]; then
+        if [ $dealer_score_val -gt 21 ]; then
+            echo "Dealer busts! You win."
+            ((player_score++))
+        elif [ $score -gt $dealer_score_val ]; then
+            echo "You win!"
+            ((player_score++))
+        elif [ $score -eq $dealer_score_val ]; then
+            echo "Push."
+        else
+            echo "Dealer wins."
+            ((dealer_score++))
+        fi
+    fi
+
+    echo "Scores - You: $player_score, Dealer: $dealer_score"
+    echo "Play again? (y/n)"
+    read play_again
+    if [[ $play_again != "y" ]]; then
+        break
+    fi
+    init_deck
+done
+            </pre>
+            <h3 class="text-3xl font-semibold text-gray-800">4.4 Flowchart</h3>
+            <p class="text-gray-700">Figure 4.1: Flowchart for blackjack.sh</p>
+            <div class="placeholder-img">Blackjack Flowchart Placeholder</div>
+            <p class="text-sm text-gray-600">Note: Replace with actual flowchart image.</p>
+            <h3 class="text-3xl font-semibold text-gray-800">4.5 Testing Evidence</h3>
+            <p class="text-gray-700">Figure 4.2: Blackjack Win Test</p>
+            <div class="placeholder-img">Blackjack Win Test Placeholder</div>
+            <p class="text-gray-700">Figure 4.3: Bust Test</p>
+            <div class="placeholder-img">Blackjack Bust Test Placeholder</div>
+            <p class="text-sm text-gray-600">Note: Replace with actual test outputs.</p>
+        </div>
+    </main>
+
+    <footer class="bg-blue-900 text-white py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-wrap justify-between items-center">
+                <div>
+                    <p class="text-lg">© 2025 [Your Name]. All rights reserved.</p>
+                    <p class="text-sm mt-2">Student ID: [Your ID]</p>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <h4 class="text-lg font-semibold">Contact</h4>
+                    <p class="text-sm mt-2">
+                        <a href="mailto:niresh.dhakal@nami.edu.np" class="text-blue-300 hover:text-blue-100">Module Tutor: Niresh Dhakal</a>
+                    </p>
+                    <p class="text-sm mt-1">
+                        <a href="mailto:[your.email@nami.edu.np]" class="text-blue-300 hover:text-blue-100">[Your Email]</a>
+                    </p>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <h4 class="text-lg font-semibold">Links</h4>
+                    <p class="text-sm mt-2">
+                        <a href="https://nami.edu.np" class="text-blue-300 hover:text-blue-100">NAMI College</a>
+                    </p>
+                    <p class="text-sm mt-1">
+                        <a href="https://github.com/[your-github]" class="text-blue-300 hover:text-blue-100">GitHub Repository</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector(`button[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
+    </script>
+</body>
+</html>
