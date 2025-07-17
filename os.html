@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSY2092 Unix Assignment Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            color: #f0f0f0;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .deadline {
+            background: rgba(255, 107, 107, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b6b;
+            color: white;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .nav-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-tab {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .content-section {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .program-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .program-title {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .program-weight {
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #4299e1;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #f39c12;
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #ff7675, #d63031);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #a10e0e;
+        }
+
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            position: relative;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -20px;
+            top: 15px;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #667eea;
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 30px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 45%;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 55%;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            right: -45px;
+        }
+
+        .timeline-item:nth-child(even)::before {
+            left: -45px;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+        }
+
+        .floating-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .floating-nav a {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .floating-nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .grade-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .grade-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .grade-percentage {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .responsive-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .responsive-table th,
+        .responsive-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .responsive-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .responsive-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .nav-tab {
+                margin-bottom: 10px;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                width: calc(100% - 50px);
+                left: 50px !important;
+            }
+
+            .timeline-item::before {
+                left: -35px !important;
+            }
+
+            .floating-nav {
+                display: none;
+            }
+
+            .grade-breakdown {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted #667eea;
+        }
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+
+        .accordion {
+            margin: 20px 0;
+        }
+
+        .accordion-item {
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-header:hover {
+            background: #e9ecef;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-content.active {
+            max-height: 1000px;
+        }
+
+        .accordion-body {
+            padding: 20px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #e74c3c);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CSY2092 Operating Systems</h1>
+            <div class="subtitle">Linux Programming Assignment Guide</div>
+            <div class="deadline">
+                📅 Deadline: September 1st, 2025 | Worth: 50% of Module Grade
+            </div>
+        </header>
+
+        <div class="nav-container">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for topics, requirements, or code examples..." id="searchInput">
+            </div>
+            
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-section="overview">📋 Overview</button>
+                <button class="nav-tab" data-section="setup">⚙️ Setup</button>
+                <button class="nav-tab" data-section="program1">📐 Area Calculator</button>
+                <button class="nav-tab" data-section="program2">💻 Custom Prompt</button>
+                <button class="nav-tab" data-section="program3">💰 Bonus Calculator</button>
+                <button class="nav-tab" data-section="program4">🃏 Blackjack</button>
+                <button class="nav-tab" data-section="documentation">📚 Documentation</button>
+                <button class="nav-tab" data-section="testing">🧪 Testing</button>
+                <button class="nav-tab" data-section="timeline">⏰ Timeline</button>
+                <button class="nav-tab" data-section="checklist">✅ Checklist</button>
+                <button class="nav-tab" data-section="pitfalls">⚠️ Pitfalls</button>
+                <button class="nav-tab" data-section="help">💡 Help</button>
+            </div>
+
+            <div class="grade-breakdown">
+                <div class="grade-item">
+                    <div class="grade-percentage">55%</div>
+                    <div>Code Quality</div>
+                </div>
+                <div class="grade-item">
+                    <div class="grade-percentage">30%</div>
+                    <div>Demonstration</div>
+                </div>
+                <div class="grade-item">
+                    <div class="grade-percentage">15%</div>
+                    <div>Documentation</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overview Section simple-->
+        <div class="content-section active" id="overview">
+            <h2>📋 Assignment Overview</h2>
+            
+            <div class="highlight">
+                <strong>Important:</strong> This assignment consists of 4 programs that must be completed in bash scripting with comprehensive documentation.
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📐</div>
+                    <h3>Area Calculator</h3>
+                    <p>Calculate rectangle area in cm² and square inches with input validation and conversion capabilities.</p>
+                    <div class="program-weight">20% of grade</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3>Custom Prompt</h3>
+                    <p>Personalize your bash prompt permanently using .bashrc configuration.</p>
+                    <div class="program-weight">5% of grade</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Bonus Calculator</h3>
+                    <p>Calculate Mercedes Benz salesperson bonuses with tax calculations and bubble sort implementation.</p>
+                    <div class="program-weight">35% of grade</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🃏</div>
+                    <h3>Blackjack Game</h3>
+                    <p>Full implementation of the Blackjack card game with arrays, functions, and game logic.</p>
+                    <div class="program-weight">40% of grade</div>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>Critical Requirements:</strong>
+                <ul>
+                    <li>All code must be in TEXT format (not screenshots)</li>
+                    <li>Personalized prompt must appear in ALL screenshots</li>
+                    <li>Student ID must be visible in screenshot paths</li>
+                    <li>Must implement bubble sort manually (no built-in sort)</li>
+                    <li>Maximum 15% Python code allowed per program</li>
+                    <li>Comprehensive error checking required</li>
+                </ul>
+            </div>
+
+            <h3>Assessment Breakdown</h3>
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Weight</th>
+                        <th>Learning Outcomes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Code as per guidelines</td>
+                        <td>55%</td>
+                        <td>c, f, g, i, j</td>
+                    </tr>
+                    <tr>
+                        <td>Demonstration of program</td>
+                        <td>30%</td>
+                        <td>All outcomes</td>
+                    </tr>
+                    <tr>
+                        <td>Report</td>
+                        <td>15%</td>
+                        <td>i, j</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Setup Section -->
+        <div class="content-section" id="setup">
+            <h2>⚙️ Environment Setup</h2>
+            
+            <div class="program-card">
+                <div class="program-title">Directory Structure</div>
+                <p>Create a organized directory structure for your assignment:</p>
+                <div class="code-block">mkdir ~/CSY2092_Assignment
+cd ~/CSY2092_Assignment
+mkdir code documentation screenshots testing
+mkdir documentation/area documentation/prompt documentation/bonus documentation/blackjack</div>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Required Tools</div>
+                <ul class="step-list">
+                    <li><strong>Text Editor:</strong> nano, vim, or gedit for coding</li>
+                    <li><strong>Shell:</strong> bash (or compatible sh, korn shell)</li>
+                    <li><strong>Calculator:</strong> bc for floating-point arithmetic</li>
+                    <li><strong>Documentation:</strong> Google Docs for flowcharts</li>
+                    <li><strong>Testing:</strong> Terminal for comprehensive testing</li>
+                </ul>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">File Permissions</div>
+                <p>Make sure all shell scripts are executable:</p>
+                <div class="code-block">chmod +x area.sh
+chmod +x bonus.sh
+chmod +x blackjack.sh</div>
+            </div>
+
+            <div class="highlight">
+                <strong>Pro Tip:</strong> Set up your personalized prompt first, as it must appear in ALL screenshots for the assignment.
+            </div>
+        </div>
+
+        <!-- Program 1: Area Calculator -->
+        <div class="content-section" id="program1">
+            <h2>📐 Program 1: Rectangle Area Calculator</h2>
+            
+            <div class="program-card">
+                <div class="program-title">Requirements</div>
+                <div class="program-weight">20% of total grade</div>
+                <ul>
+                    <li>Prompt user for width and height in centimeters</li>
+                    <li>Calculate area in square centimeters and square inches</li>
+                    <li>Use regular expressions for input validation</li>
+                    <li>Option to quit or enter new data</li>
+                    <li>Use bc for floating-point calculations</li>
+                    <li>Comprehensive error checking</li>
+                </ul>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Implementation Structure</div>
+                <div class="code-block">#!/bin/bash
+# area.sh - Rectangle Area Calculator
+# Author: [Your Name]
+# Student ID: [Your ID]
+# Date: [Current Date]
+# Description: Calculates rectangle area in cm² and square inches
+
+# Constants
+INCH_TO_CM=2.54
+
+# Function to validate numeric input
+validate_number() {
+    local input="$1"
+    if [[ $input =~ ^[0-9]+\.?[0-9]*$ ]] && [[ $input != "0" ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Function to calculate area
+calculate_area() {
+    local width="$1"
+    local height="$2"
+    
+    # Calculate area in cm²
+    local area_cm=$(echo "scale=2; $width * $height" | bc)
+    
+    # Convert to square inches
+    local area_inches=$(echo "scale=2; $area_cm / ($INCH_TO_CM * $INCH_TO_CM)" | bc)
+    
+    echo "Area in square centimeters: $area_cm cm²"
+    echo "Area in square inches: $area_inches in²"
+}
+
+# Main program loop
+main() {
+    while true; do
+        echo "=== Rectangle Area Calculator ==="
+        
+        # Get width
+        while true; do
+            read -p "Enter width in cm: " width
+            if validate_number "$width"; then
+                break
+            else
+                echo "Error: Please enter a valid positive number"
+            fi
+        done
+        
+        # Get height
+        while true; do
+            read -p "Enter height in cm: " height
+            if validate_number "$height"; then
+                break
+            else
+                echo "Error: Please enter a valid positive number"
+            fi
+        done
+        
+        # Calculate and display results
+        calculate_area "$width" "$height"
+        
+        # Ask if user wants to continue
+        read -p "Continue? (y/n): " continue
+        if [[ $continue != "y" && $continue != "Y" ]]; then
+            break
+        fi
+    done
+    
+    echo "Thank you for using the Rectangle Area Calculator!"
+}
+
+main "$@"</div>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Key Features</div>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            Input Validation
+                            <span>+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>Use regular expressions to validate numeric input:</p>
+                                <div class="code-block">if [[ $input =~ ^[0-9]+\.?[0-9]*$ ]]; then
+    # Valid number
+else
+    # Invalid input
+fi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            Floating Point Calculations
+                            <span>+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>Use bc for precise floating-point arithmetic:</p>
+                                <div class="code-block">area_cm=$(echo "scale=2; $width * $height" | bc)
+area_inches=$(echo "scale=2; $area_cm / ($INCH_TO_CM * $INCH_TO_CM)" | bc)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Program 2: Custom Prompt -->
+        <div class="content-section" id="program2">
+            <h2>💻 Program 2: Personalized Bash Prompt</h2>
+            
+            <div class="program-card">
+                <div class="program-title">Requirements</div>
+                <div class="program-weight">5% of total grade</div>
+                <ul>
+                    <li>Customize bash prompt permanently</li>
+                    <li>Must be in .bashrc or .bash_profile</li>
+                    <li>Must show in ALL assignment screenshots</li>
+                    <li>Include student identification</li>
+                </ul>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Implementation Steps</div>
+                <ol class="step-list">
+                    <li>Open .bashrc file for editing:
+                        <div class="code-block">nano ~/.bashrc</div>
+                    </li>
+                    <li>Add custom prompt at the end of file:
+                        <div class="code-block"># Custom prompt for CSY2092 Assignment
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Custom prompt with student info
+export PS1="\[${GREEN}\]\u@\h\[${NC}\]:\[${BLUE}\]\w\[${NC}\] [\[${YELLOW}\]StudentID: YOUR_ID\[${NC}\]] \$ "</div>
+                    </li>
+                    <li>Apply changes:
+                        <div class="code-block">source ~/.bashrc</div>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Prompt Elements</div>
+                <table class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Code</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Username</td>
+                            <td>\u</td>
+                            <td>Current user name</td>
+                        </tr>
+                        <tr>
+                            <td>Hostname</td>
+                            <td>\h</td>
+                            <td>Machine hostname</td>
+                        </tr>
+                        <tr>
+                            <td>Working Directory</td>
+                            <td>\w</td>
+                            <td>Current directory path</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>\d</td>
+                            <td>Current date (e.g., "Mon Jul 17")</td>
+                        </tr>
+                        <tr>
+                            <td>Time</td>
+                            <td>\t</td>
+                            <td>Current time (HH:MM:SS)</td>
+                        </tr>
+                        <tr>
+                            <td>Shell Level</td>
+                            <td>\$</td>
+                            <td>Prompt character ($ for normal user, # for root)</td>
+                        </tr>
+                        <tr>
+                            <td>Command Number</td>
+                            <td>\!</td>
+                            <td>History number of this command</td>
+                        </tr>
+                        <tr>
+                            <td>Command Number (Session)</td>
+                            <td>\#</td>
+                            <td>Command number in this shell session</td>
+                        </tr>
+                        <tr>
+                            <td>Previous Command Status</td>
+                            <td>\$?</td>
+                            <td>Exit status of previous command</td>
+                        </tr>
+                        <tr>
+                            <td>Newline</td>
+                            <td>\n</td>
+                            <td>New line</td>
+                        </tr>
+                        <tr>
+                            <td>Escaped Color Codes</td>
+                            <td>\[...\]</td>
+                            <td>Non-printing characters (for color, formatting)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Program 3: Bonus Calculator -->
+        <div class="content-section" id="program3">
+            <h2>💰 Program 3: Mercedes Benz Bonus Calculator (bonus.sh)</h2>
+            <div class="program-card">
+                <div class="program-title">Requirements Analysis</div>
+                <ul>
+                    <li>Calculate salesperson bonuses based on sales targets</li>
+                    <li>Handle 3-20 salespersons</li>
+                    <li>Implement tax calculations</li>
+                    <li>Save data to file</li>
+                    <li>Include bubble sort (no built-in sort command)</li>
+                    <li>Comprehensive input validation</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Data Structures Needed</div>
+                <div class="code-block"># Car models and average prices
+declare -A CAR_PRICES=(
+    ["A"]="31095"
+    ["B"]="33162"
+    ["C"]="42537"
+    ["E"]="54437"
+    ["AMG"]="79660"
+)
+
+# Bonus thresholds
+declare -A BONUS_LEVELS=(
+    ["200000"]="10000"
+    ["300000"]="15000"
+    ["400000"]="20000"
+    ["500000"]="25000"
+    ["650000"]="30000"
+)</div>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Key Functions to Implement</div>
+                <ol class="step-list">
+                    <li>Input validation functions</li>
+                    <li>Sales calculation function</li>
+                    <li>Bonus calculation function</li>
+                    <li>Tax calculation function</li>
+                    <li>Bubble sort implementation</li>
+                    <li>File I/O functions</li>
+                    <li>Display functions</li>
+                </ol>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Tax Calculation Logic</div>
+                <ul>
+                    <li>Personal allowance: £12,500 (no tax)</li>
+                    <li>Basic rate: £12,501-£50,000 (20% tax)</li>
+                    <li>Higher rate: £50,001-£150,000 (40% tax)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Program 4: Blackjack Game -->
+        <div class="content-section" id="program4">
+            <h2>🃏 Program 4: Blackjack Game (blackjack.sh)</h2>
+            <div class="program-card">
+                <div class="program-title">Requirements Analysis</div>
+                <ul>
+                    <li>Implement full blackjack rules</li>
+                    <li>Use arrays for cards and hands</li>
+                    <li>Remove dealt cards from deck</li>
+                    <li>Support dealer and multiple players</li>
+                    <li>Use functions for game logic</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Game Structure Planning</div>
+                <div class="code-block"># Card deck representation
+declare -a DECK
+declare -a PLAYER_HAND
+declare -a DEALER_HAND
+
+# Game functions needed:
+# - initialize_deck()
+# - shuffle_deck()
+# - deal_card()
+# - calculate_hand_value()
+# - player_turn()
+# - dealer_turn()
+# - determine_winner()</div>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Key Game Logic</div>
+                <ol class="step-list">
+                    <li>Card values: 2-10 = face value, J/Q/K = 10, A = 1 or 11</li>
+                    <li>Blackjack: Ace + 10-value card = 21</li>
+                    <li>Dealer rules: Hit on 16 or less, stand on 17 or more</li>
+                    <li>Win conditions: Player closer to 21 without busting</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Documentation Requirements -->
+        <div class="content-section" id="documentation">
+            <h2>📚 Documentation Requirements</h2>
+            <div class="program-card">
+                <div class="program-title">For Each Program Create:</div>
+                <ul>
+                    <li><strong>Program Code</strong>: Text file with .sh extension, comprehensive comments, meaningful variable names, proper indentation</li>
+                    <li><strong>Flowchart</strong>: Visual representation of program flow, section-based numbering</li>
+                    <li><strong>User Guide</strong>: How to run the program, inputs needed, expected outputs, clear step-by-step instructions</li>
+                    <li><strong>Technical Description</strong>: How the code works, focus on algorithms, data structures, key functions</li>
+                    <li><strong>Testing Evidence</strong>: Screenshots with personalized prompt, test cases for all scenarios</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Report Formatting Requirements</div>
+                <ul>
+                    <li>Font: Times New Roman/Cambria for body, Courier for code</li>
+                    <li>Spacing: 1.5 for text, single for code</li>
+                    <li>Headings: 3 levels max, consistent formatting</li>
+                    <li>Images: Below text, numbered, titled, labeled</li>
+                    <li>Pages: All numbered after table of contents</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Testing Strategy -->
+        <div class="content-section" id="testing">
+            <h2>🧪 Testing Strategy</h2>
+            <div class="program-card">
+                <div class="program-title">Test Categories for Each Program</div>
+                <ul>
+                    <li><strong>Input Validation Tests</strong>: Valid/invalid/empty/boundary/negative inputs</li>
+                    <li><strong>Functional Tests</strong>: Normal operation, edge cases, error conditions, recovery</li>
+                    <li><strong>Screenshot Requirements</strong>: Show personalized prompt, student ID in path, all test scenarios, expected vs actual results</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="content-section" id="timeline">
+            <h2>⏰ Implementation Timeline</h2>
+            <div class="program-card">
+                <div class="program-title">Week 1: Setup and Program 1</div>
+                <ul>
+                    <li>Set up environment</li>
+                    <li>Create personalized prompt</li>
+                    <li>Implement area.sh</li>
+                    <li>Begin documentation</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Week 2: Program 2 and 3</div>
+                <ul>
+                    <li>Complete bonus.sh</li>
+                    <li>Implement bubble sort</li>
+                    <li>Test thoroughly</li>
+                    <li>Continue documentation</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Week 3: Program 4</div>
+                <ul>
+                    <li>Implement blackjack.sh</li>
+                    <li>Focus on arrays and functions</li>
+                    <li>Complete game logic</li>
+                    <li>Extensive testing</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Week 4: Documentation and Testing</div>
+                <ul>
+                    <li>Complete all documentation</li>
+                    <li>Final testing phase</li>
+                    <li>Screenshots and evidence</li>
+                    <li>Report compilation</li>
+                    <li>Final review</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="content-section" id="checklist">
+            <h2>✅ Final Submission Checklist</h2>
+            <div class="program-card">
+                <div class="program-title">Code Files</div>
+                <ul class="checklist">
+                    <li>area.sh - working and commented</li>
+                    <li>bonus.sh - working and commented</li>
+                    <li>blackjack.sh - working and commented</li>
+                    <li>Personalized prompt in .bashrc</li>
+                    <li>All files executable and tested</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Documentation</div>
+                <ul class="checklist">
+                    <li>Flowcharts for all programs</li>
+                    <li>User guides for all programs</li>
+                    <li>Technical descriptions for all programs</li>
+                    <li>Testing evidence with screenshots</li>
+                    <li>Report with proper formatting</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Quality Assurance</div>
+                <ul class="checklist">
+                    <li>All programs use meaningful variable names</li>
+                    <li>Comprehensive error checking implemented</li>
+                    <li>Functions used appropriately</li>
+                    <li>Code follows style guidelines</li>
+                    <li>Screenshots show personalized prompt</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Submission Requirements</div>
+                <ul class="checklist">
+                    <li>Assignment cover sheet completed</li>
+                    <li>All work in text format (not screenshots)</li>
+                    <li>Student ID visible in screenshots</li>
+                    <li>Files organized properly</li>
+                    <li>Portfolio compiled correctly</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Common Pitfalls -->
+        <div class="content-section" id="pitfalls">
+            <h2>⚠️ Common Pitfalls to Avoid</h2>
+            <ol class="step-list">
+                <li>Screenshots instead of text - Code must be in text format</li>
+                <li>Missing personalized prompt - Must show in ALL screenshots</li>
+                <li>Inadequate error checking - Validate ALL user inputs</li>
+                <li>Poor documentation - Each program needs complete documentation</li>
+                <li>Using built-in sort - Must implement bubble sort manually</li>
+                <li>Missing student identification - Must be visible in screenshots</li>
+                <li>Incomplete testing - Must test all scenarios and edge cases</li>
+            </ol>
+        </div>
+
+        <!-- Getting Help -->
+        <div class="content-section" id="help">
+            <h2>💡 Getting Help</h2>
+            <div class="program-card">
+                <div class="program-title">Instructor</div>
+                <p>Niresh Dhakal (<a href="mailto:niresh.dhakal@nami.edu.np">niresh.dhakal@nami.edu.np</a>)</p>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Testing</div>
+                <p>Test each program thoroughly before submission</p>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Documentation</div>
+                <p>Follow the provided documentation guidelines exactly</p>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Code Review</div>
+                <p>Have someone else review your code before submission</p>
+            </div>
+            <div class="highlight">
+                <strong>Remember:</strong> This assignment is worth 50% of your module grade. Take time to do it properly, test thoroughly, and document completely.
+            </div>
+        </div>
+
+        <!-- Floating Navigation -->
+        <div class="floating-nav">
+            <a href="#overview">📋 Overview</a>
+            <a href="#setup">⚙️ Setup</a>
+            <a href="#program1">📐 Area Calculator</a>
+            <a href="#program2">💻 Custom Prompt</a>
+            <a href="#program3">💰 Bonus Calculator</a>
+            <a href="#program4">🃏 Blackjack</a>
+            <a href="#documentation">📚 Documentation</a>
+            <a href="#testing">🧪 Testing</a>
+            <a href="#timeline">⏰ Timeline</a>
+            <a href="#checklist">✅ Checklist</a>
+            <a href="#pitfalls">⚠️ Pitfalls</a>
+            <a href="#help">💡 Help</a>
+        </div>
+    </div>
+
+    <script>
+        // Navigation: Show the correct section when a nav-tab is clicked
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active from all tabs
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                // Hide all sections
+                document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+                // Activate clicked tab
+                this.classList.add('active');
+                // Show the corresponding section
+                const sectionId = this.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                if (section) section.classList.add('active');
+            });
+        });
+
+        // Accordion toggle function
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            content.classList.toggle('active');
+            // Toggle plus/minus
+            const span = header.querySelector('span');
+            span.textContent = content.classList.contains('active') ? '-' : '+';
+        }
+
+        // Search filter for topics
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            document.querySelectorAll('.content-section').forEach(section => {
+                if (query === '' || section.textContent.toLowerCase().includes(query)) {
+                    section.style.display = '';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
