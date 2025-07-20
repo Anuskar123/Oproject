@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSY2092 Unix Assignment Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            color: #f0f0f0;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .deadline {
+            background: rgba(255, 107, 107, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b6b;
+            color: white;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .nav-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-tab {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .content-section {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .program-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .program-title {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .program-weight {
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #4299e1;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #f39c12;
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #ff7675, #d63031);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #a10e0e;
+        }
+
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            position: relative;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -20px;
+            top: 15px;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #667eea;
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 30px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 45%;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 55%;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            right: -45px;
+        }
+
+        .timeline-item:nth-child(even)::before {
+            left: -45px;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+        }
+
+        .floating-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .floating-nav a {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .floating-nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .grade-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .grade-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .grade-percentage {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .responsive-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .responsive-table th,
+        .responsive-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .responsive-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .responsive-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .nav-tab {
+                margin-bottom: 10px;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                width: calc(100% - 50px);
+                left: 50px !important;
+            }
+
+            .timeline-item::before {
+                left: -35px !important;
+            }
+
+            .floating-nav {
+                display: none;
+            }
+
+            .grade-breakdown {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted #667eea;
+        }
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+
+        .accordion {
+            margin: 20px 0;
+        }
+
+        .accordion-item {
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-header:hover {
+            background: #e9ecef;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-content.active {
+            max-height: 1000px;
+        }
+
+        .accordion-body {
+            padding: 20px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #e74c3c);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CSY2092 Operating Systems</h1>
+            <div class="subtitle">Linux Programming Assignment Guide</div>
+            <div class="deadline">
+                📅 Deadline: September 1st, 2025 | Worth: 50% of Module Grade
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px; color: white;">
+                <strong>Instructor:</strong> Niresh Dhakal (niresh.dhakal@nami.edu.np)
+            </div>
+        </header>
+
+        <div class="nav-container">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for topics, requirements, or code examples..." id="searchInput">
+            </div>
+            
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-section="overview">📋 Overview</button>
+                <button class="nav-tab" data-section="setup">⚙️ Setup</button>
+                <button class="nav-tab" data-section="program1">📐 Area Calculator</button>
+                <button class="nav-tab" data-section="program2">💻 Custom Prompt</button>
+                <button class="nav-tab" data-section="program3">💰 Bonus Calculator</button>
+                <button class="nav-tab" data-section="program4">🃏 Blackjack</button>
+                <button class="nav-tab" data-section="documentation">📚 Documentation</button>
+                <button class="nav-tab" data-section="testing">🧪 Testing</button>
+                <button class="nav-tab" data-section="timeline">⏰ Timeline</button>
+                <button class="nav-tab" data-section="checklist">✅ Checklist</button>
+                <button class="nav-tab" data-section="pitfalls">⚠️ Pitfalls</button>
+                <button class="nav-tab" data-section="help">💡 Help</button>
+            </div>
+
+            <div class="grade-breakdown">
+                <div class="grade-item">
+                    <div class="grade-percentage">55%</div>
+                    <div>Code Quality</div>
+                </div>
+                <div class="grade-item">
+                    <div class="grade-percentage">30%</div>
+                    <div>Demonstration</div>
+                </div>
+                <div class="grade-item">
+                    <div class="grade-percentage">15%</div>
+                    <div>Documentation</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overview Section simple-->
+        <div class="content-section active" id="overview">
+            <h2>📋 Assignment Overview</h2>
+            
+            <div class="highlight">
+                <strong>Important:</strong> This assignment consists of 4 programs that must be completed in bash scripting with comprehensive documentation.
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📐</div>
+                    <h3>Area Calculator</h3>
+                    <p>Calculate rectangle area in cm² and square inches with input validation and conversion capabilities.</p>
+                    <div class="program-weight">20% of grade</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3>Custom Prompt</h3>
+                    <p>Personalize your bash prompt permanently using .bashrc configuration.</p>
+                    <div class="program-weight">5% of grade</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Bonus Calculator</h3>
+                    <p>Calculate Mercedes Benz salesperson bonuses with tax calculations and bubble sort implementation.</p>
+                    <div class="program-weight">35% of grade</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🃏</div>
+                    <h3>Blackjack Game</h3>
+                    <p>Full implementation of the Blackjack card game with arrays, functions, and game logic.</p>
+                    <div class="program-weight">40% of grade</div>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>Critical Requirements:</strong>
+                <ul>
+                    <li>All code must be in TEXT format (not screenshots)</li>
+                    <li>Personalized prompt must appear in ALL screenshots</li>
+                    <li>Student ID must be visible in screenshot paths</li>
+                    <li>Must implement bubble sort manually (no built-in sort)</li>
+                    <li>Maximum 15% Python code allowed per program</li>
+                    <li>Comprehensive error checking required</li>
+                    <li>Use regular expressions for input validation</li>
+                    <li>All programs must be well-commented and documented</li>
+                    <li>Screenshots must show your personalized prompt</li>
+                    <li>Must be able to demonstrate code understanding</li>
+                </ul>
+            </div>
+
+            <h3>Assessment Breakdown</h3>
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Weight</th>
+                        <th>Learning Outcomes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Code as per guidelines</td>
+                        <td>55%</td>
+                        <td>c, f, g, i, j</td>
+                    </tr>
+                    <tr>
+                        <td>Demonstration of program</td>
+                        <td>30%</td>
+                        <td>All outcomes</td>
+                    </tr>
+                    <tr>
+                        <td>Report</td>
+                        <td>15%</td>
+                        <td>i, j</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Grading Criteria</h3>
+            <div class="program-card">
+                <div class="program-title">Grade Expectations</div>
+                <ul>
+                    <li><strong>Pass (D):</strong> Working programs with basic demonstration</li>
+                    <li><strong>Reasonable Pass (C):</strong> Working programs, commented, with user guide, error checking, and screenshots</li>
+                    <li><strong>Good Pass (B):</strong> All above plus evidence of self-learning, novel techniques, comprehensive error checking</li>
+                    <li><strong>Very Good Pass (A):</strong> Comprehensively commented, in-depth user guide, elegant code structure, functions, extensive error checking, all possible test scenarios</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Setup Section -->
+        <div class="content-section" id="setup">
+            <h2>⚙️ Complete Environment Setup Guide</h2>
+            
+            <div class="warning">
+                <strong>⚠️ CRITICAL FIRST STEP:</strong> Set up your personalized prompt FIRST! It must appear in ALL screenshots for identification and grading purposes.
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Step 1: Personalized Prompt Setup (DO THIS FIRST!)</div>
+                <p>This is the most important step - your prompt must be visible in every screenshot!</p>
+                <ol class="step-list">
+                    <li><strong>Open your bash configuration file:</strong>
+                        <div class="code-block">nano ~/.bashrc</div>
+                        <p><em>Note: Use ~/.bash_profile if ~/.bashrc doesn't exist</em></p>
+                    </li>
+                    <li><strong>Add your custom prompt at the END of the file:</strong>
+                        <div class="code-block"># CSY2092 Assignment - Custom Prompt
+# Replace YOUR_STUDENT_ID with your actual student ID
+# Replace YOUR_NAME with your actual name
+
+# Define colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+# Custom prompt with student identification
+export PS1="\[${GREEN}\]\u@\h\[${NC}\]:\[${BLUE}\]\w\[${NC}\] [\[${YELLOW}\]ID:YOUR_STUDENT_ID\[${NC}\]] \[${PURPLE}\]CSY2092\[${NC}\] \$ "
+
+# Alternative colorful prompt (choose one)
+# export PS1="\[${CYAN}\]\u\[${NC}\]@\[${GREEN}\]\h\[${NC}\]:\[${BLUE}\]\w\[${NC}\] [\[${YELLOW}\]StudentID:YOUR_STUDENT_ID\[${NC}\]] \[${RED}\]CSY2092\[${NC}\] \$ "</div>
+                    </li>
+                    <li><strong>Save and exit:</strong>
+                        <div class="code-block"># In nano: Ctrl+X, then Y, then Enter
+# In vim: :wq</div>
+                    </li>
+                    <li><strong>Apply the changes:</strong>
+                        <div class="code-block">source ~/.bashrc</div>
+                    </li>
+                    <li><strong>Verify your prompt is working:</strong>
+                        <div class="code-block"># Your prompt should now show:
+# username@hostname:/current/path [ID:YOUR_STUDENT_ID] CSY2092 $</div>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Step 2: Create Assignment Directory Structure</div>
+                <p>Organize your work with a proper directory structure:</p>
+                <ol class="step-list">
+                    <li><strong>Navigate to your home directory:</strong>
+                        <div class="code-block">cd ~</div>
+                    </li>
+                    <li><strong>Create main assignment directory:</strong>
+                        <div class="code-block">mkdir CSY2092_Assignment
+cd CSY2092_Assignment</div>
+                    </li>
+                    <li><strong>Create subdirectories for organization:</strong>
+                        <div class="code-block"># Create main folders
+mkdir code documentation screenshots testing reports
+
+# Create program-specific documentation folders
+mkdir documentation/area documentation/prompt documentation/bonus documentation/blackjack
+
+# Create testing folders for each program
+mkdir testing/area testing/prompt testing/bonus testing/blackjack
+
+# Create screenshots folders
+mkdir screenshots/area screenshots/prompt screenshots/bonus screenshots/blackjack</div>
+                    </li>
+                    <li><strong>Verify directory structure:</strong>
+                        <div class="code-block">tree CSY2092_Assignment
+# or if tree is not available:
+find CSY2092_Assignment -type d</div>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Step 3: Install Required Tools</div>
+                <ol class="step-list">
+                    <li><strong>Check if bc (calculator) is installed:</strong>
+                        <div class="code-block">which bc
+bc --version</div>
+                        <p>If not installed:</p>
+                        <div class="code-block"># Ubuntu/Debian:
+sudo apt-get update
+sudo apt-get install bc
+
+# CentOS/RHEL:
+sudo yum install bc
+
+# macOS:
+brew install bc</div>
+                    </li>
+                    <li><strong>Verify bash version:</strong>
+                        <div class="code-block">bash --version
+echo $BASH_VERSION</div>
+                        <p>Ensure you have bash 4.0+ for associative arrays</p>
+                    </li>
+                    <li><strong>Choose and test your text editor:</strong>
+                        <div class="code-block"># Test nano (beginner-friendly):
+nano test.txt
+
+# Test vim (advanced):
+vim test.txt
+
+# Test gedit (GUI):
+gedit test.txt &</div>
+                    </li>
+                    <li><strong>Verify file permissions tools:</strong>
+                        <div class="code-block">which chmod
+which ls</div>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Step 4: Create Template Files</div>
+                <ol class="step-list">
+                    <li><strong>Navigate to code directory:</strong>
+                        <div class="code-block">cd ~/CSY2092_Assignment/code</div>
+                    </li>
+                    <li><strong>Create template shell script files:</strong>
+                        <div class="code-block"># Create area.sh template
+cat > area.sh << 'EOF'
+#!/bin/bash
+# area.sh - Rectangle Area Calculator
+# Author: [Your Name]
+# Student ID: [Your Student ID]
+# Date: [Current Date]
+# Description: Calculates rectangle area in cm² and square inches
+# Course: CSY2092 Operating Systems
+
+# TODO: Implement area calculation program
+echo "Area Calculator - Template Created"
+EOF
+
+# Create bonus.sh template
+cat > bonus.sh << 'EOF'
+#!/bin/bash
+# bonus.sh - Mercedes Benz Bonus Calculator
+# Author: [Your Name]
+# Student ID: [Your Student ID]
+# Date: [Current Date]
+# Description: Calculates salesperson bonuses with tax calculations
+# Course: CSY2092 Operating Systems
+
+# TODO: Implement bonus calculation program
+echo "Bonus Calculator - Template Created"
+EOF
+
+# Create blackjack.sh template
+cat > blackjack.sh << 'EOF'
+#!/bin/bash
+# blackjack.sh - Blackjack Card Game
+# Author: [Your Name]
+# Student ID: [Your Student ID]
+# Date: [Current Date]
+# Description: Implementation of Blackjack card game
+# Course: CSY2092 Operating Systems
+
+# TODO: Implement blackjack game
+echo "Blackjack Game - Template Created"
+EOF</div>
+                    </li>
+                    <li><strong>Make scripts executable:</strong>
+                        <div class="code-block">chmod +x area.sh bonus.sh blackjack.sh</div>
+                    </li>
+                    <li><strong>Test templates:</strong>
+                        <div class="code-block">./area.sh
+./bonus.sh
+./blackjack.sh</div>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Step 5: Set Up Documentation Templates</div>
+                <ol class="step-list">
+                    <li><strong>Create documentation templates:</strong>
+                        <div class="code-block">cd ~/CSY2092_Assignment/documentation
+
+# Create main report template
+cat > CSY2092_Assignment_Report.md << 'EOF'
+# CSY2092 Operating Systems Assignment
+## Linux Programming Portfolio
+
+**Student Name:** [Your Name]
+**Student ID:** [Your Student ID]
+**Course:** CSY2092 Operating Systems
+**Instructor:** Niresh Dhakal
+**Deadline:** September 1st, 2025
+
+## Table of Contents
+1. Program 1: Rectangle Area Calculator
+2. Program 2: Personalized Bash Prompt
+3. Program 3: Mercedes Benz Bonus Calculator
+4. Program 4: Blackjack Game
+5. Testing Evidence
+6. Appendices
+
+---
+**Note:** Remember to include flowcharts, user guides, and technical descriptions for each program.
+EOF</div>
+                    </li>
+                    <li><strong>Create individual program documentation folders:</strong>
+                        <div class="code-block"># Area calculator documentation
+echo "# Area Calculator Documentation" > area/README.md
+echo "# Flowchart placeholder" > area/flowchart.md
+echo "# User guide placeholder" > area/user_guide.md
+echo "# Technical description placeholder" > area/technical_description.md
+
+# Repeat for other programs
+echo "# Bonus Calculator Documentation" > bonus/README.md
+echo "# Blackjack Documentation" > blackjack/README.md</div>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Step 6: Testing Setup</div>
+                <ol class="step-list">
+                    <li><strong>Create test scripts:</strong>
+                        <div class="code-block">cd ~/CSY2092_Assignment/testing
+
+# Create test runner script
+cat > run_tests.sh << 'EOF'
+#!/bin/bash
+# Test runner for CSY2092 assignment
+# Tests all programs and captures screenshots
+
+echo "Starting CSY2092 Assignment Tests..."
+echo "Personalized Prompt Test:"
+pwd
+whoami
+date
+
+echo "Testing area.sh..."
+cd ../code
+./area.sh
+
+echo "Testing bonus.sh..."
+./bonus.sh
+
+echo "Testing blackjack.sh..."
+./blackjack.sh
+
+echo "All tests completed!"
+EOF
+
+chmod +x run_tests.sh</div>
+                    </li>
+                    <li><strong>Test your setup:</strong>
+                        <div class="code-block">./run_tests.sh</div>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Step 7: Verification Checklist</div>
+                <ul class="checklist">
+                    <li>✅ Personalized prompt is working and shows student ID</li>
+                    <li>✅ Directory structure is created and organized</li>
+                    <li>✅ bc calculator is installed and working</li>
+                    <li>✅ Text editor is chosen and tested</li>
+                    <li>✅ Template shell scripts are created and executable</li>
+                    <li>✅ Documentation structure is in place</li>
+                    <li>✅ Testing framework is ready</li>
+                    <li>✅ Can take screenshots showing student ID in path</li>
+                </ul>
+            </div>
+
+            <div class="highlight">
+                <strong>🎯 Next Steps:</strong>
+                <ol>
+                    <li>Start with Program 1 (Area Calculator) - it's the simplest</li>
+                    <li>Always test your code before moving to the next program</li>
+                    <li>Take screenshots at each stage showing your personalized prompt</li>
+                    <li>Document as you go - don't leave documentation until the end</li>
+                    <li>Commit to version control if using Git (recommended)</li>
+                </ol>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Quick Reference Commands</div>
+                <div class="code-block"># Navigate to assignment folder
+cd ~/CSY2092_Assignment
+
+# Run a specific program
+cd code && ./area.sh
+
+# Check file permissions
+ls -la *.sh
+
+# Make files executable
+chmod +x *.sh
+
+# View your prompt setup
+cat ~/.bashrc | tail -10
+
+# Test bc calculator
+echo "scale=2; 10.5 * 3.7" | bc
+
+# Create a quick backup
+tar -czf CSY2092_backup_$(date +%Y%m%d).tar.gz CSY2092_Assignment/</div>
+            </div>
+        </div>
+
+        <!-- Program 1: Area Calculator -->
+        <div class="content-section" id="program1">
+            <h2>📐 Program 1: Rectangle Area Calculator</h2>
+            
+            <div class="program-card">
+                <div class="program-title">Requirements</div>
+                <div class="program-weight">20% of total grade</div>
+                <ul>
+                    <li>Prompt user for width and height in centimeters</li>
+                    <li>Calculate area in square centimeters and square inches (1 inch = 2.54 cm)</li>
+                    <li>Use regular expressions for input validation</li>
+                    <li>Accept both floating point (3.142) and integer (12) input formats</li>
+                    <li>Option to quit the program or enter new data</li>
+                    <li>Use bc for floating-point calculations</li>
+                    <li>Comprehensive error checking for all inputs</li>
+                    <li>Must handle edge cases and invalid inputs gracefully</li>
+                </ul>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Implementation Structure</div>
+                <div class="code-block">#!/bin/bash
+# area.sh - Rectangle Area Calculator
+# Author: [Your Name]
+# Student ID: [Your ID]
+# Date: [Current Date]
+# Description: Calculates rectangle area in cm² and square inches
+
+# Constants
+INCH_TO_CM=2.54
+
+# Function to validate numeric input
+validate_number() {
+    local input="$1"
+    if [[ $input =~ ^[0-9]+\.?[0-9]*$ ]] && [[ $input != "0" ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Function to calculate area
+calculate_area() {
+    local width="$1"
+    local height="$2"
+    
+    # Calculate area in cm²
+    local area_cm=$(echo "scale=2; $width * $height" | bc)
+    
+    # Convert to square inches
+    local area_inches=$(echo "scale=2; $area_cm / ($INCH_TO_CM * $INCH_TO_CM)" | bc)
+    
+    echo "Area in square centimeters: $area_cm cm²"
+    echo "Area in square inches: $area_inches in²"
+}
+
+# Main program loop
+main() {
+    while true; do
+        echo "=== Rectangle Area Calculator ==="
+        
+        # Get width
+        while true; do
+            read -p "Enter width in cm: " width
+            if validate_number "$width"; then
+                break
+            else
+                echo "Error: Please enter a valid positive number"
+            fi
+        done
+        
+        # Get height
+        while true; do
+            read -p "Enter height in cm: " height
+            if validate_number "$height"; then
+                break
+            else
+                echo "Error: Please enter a valid positive number"
+            fi
+        done
+        
+        # Calculate and display results
+        calculate_area "$width" "$height"
+        
+        # Ask if user wants to continue
+        read -p "Continue? (y/n): " continue
+        if [[ $continue != "y" && $continue != "Y" ]]; then
+            break
+        fi
+    done
+    
+    echo "Thank you for using the Rectangle Area Calculator!"
+}
+
+main "$@"</div>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Key Features</div>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            Input Validation
+                            <span>+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>Use regular expressions to validate numeric input:</p>
+                                <div class="code-block">if [[ $input =~ ^[0-9]+\.?[0-9]*$ ]]; then
+    # Valid number
+else
+    # Invalid input
+fi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            Floating Point Calculations
+                            <span>+</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>Use bc for precise floating-point arithmetic:</p>
+                                <div class="code-block">area_cm=$(echo "scale=2; $width * $height" | bc)
+area_inches=$(echo "scale=2; $area_cm / ($INCH_TO_CM * $INCH_TO_CM)" | bc)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Program 2: Custom Prompt -->
+        <div class="content-section" id="program2">
+            <h2>💻 Program 2: Personalized Bash Prompt</h2>
+            
+            <div class="program-card">
+                <div class="program-title">Requirements</div>
+                <div class="program-weight">5% of total grade</div>
+                <ul>
+                    <li>Customize bash prompt permanently</li>
+                    <li>Must be in .bashrc or .bash_profile</li>
+                    <li>Must show in ALL assignment screenshots</li>
+                    <li>Include student identification</li>
+                </ul>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Implementation Steps</div>
+                <ol class="step-list">
+                    <li>Open .bashrc file for editing:
+                        <div class="code-block">nano ~/.bashrc</div>
+                    </li>
+                    <li>Add custom prompt at the end of file:
+                        <div class="code-block"># Custom prompt for CSY2092 Assignment
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Custom prompt with student info
+export PS1="\[${GREEN}\]\u@\h\[${NC}\]:\[${BLUE}\]\w\[${NC}\] [\[${YELLOW}\]StudentID: YOUR_ID\[${NC}\]] \$ "</div>
+                    </li>
+                    <li>Apply changes:
+                        <div class="code-block">source ~/.bashrc</div>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Prompt Elements</div>
+                <table class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Code</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Username</td>
+                            <td>\u</td>
+                            <td>Current user name</td>
+                        </tr>
+                        <tr>
+                            <td>Hostname</td>
+                            <td>\h</td>
+                            <td>Machine hostname</td>
+                        </tr>
+                        <tr>
+                            <td>Working Directory</td>
+                            <td>\w</td>
+                            <td>Current directory path</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>\d</td>
+                            <td>Current date (e.g., "Mon Jul 17")</td>
+                        </tr>
+                        <tr>
+                            <td>Time</td>
+                            <td>\t</td>
+                            <td>Current time (HH:MM:SS)</td>
+                        </tr>
+                        <tr>
+                            <td>Shell Level</td>
+                            <td>\$</td>
+                            <td>Prompt character ($ for normal user, # for root)</td>
+                        </tr>
+                        <tr>
+                            <td>Command Number</td>
+                            <td>\!</td>
+                            <td>History number of this command</td>
+                        </tr>
+                        <tr>
+                            <td>Command Number (Session)</td>
+                            <td>\#</td>
+                            <td>Command number in this shell session</td>
+                        </tr>
+                        <tr>
+                            <td>Previous Command Status</td>
+                            <td>\$?</td>
+                            <td>Exit status of previous command</td>
+                        </tr>
+                        <tr>
+                            <td>Newline</td>
+                            <td>\n</td>
+                            <td>New line</td>
+                        </tr>
+                        <tr>
+                            <td>Escaped Color Codes</td>
+                            <td>\[...\]</td>
+                            <td>Non-printing characters (for color, formatting)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Program 3: Bonus Calculator -->
+        <div class="content-section" id="program3">
+            <h2>💰 Program 3: Mercedes Benz Bonus Calculator (bonus.sh)</h2>
+            <div class="program-card">
+                <div class="program-title">Requirements Analysis</div>
+                <ul>
+                    <li>Calculate salesperson bonuses for Mercedes Benz dealership</li>
+                    <li>Handle 3-20 salespersons</li>
+                    <li>Basic salary: £2,000 per month</li>
+                    <li>Bonus tiers based on sales targets (£200k, £300k, £400k, £500k, £650k)</li>
+                    <li>Calculate tax using UK tax rates</li>
+                    <li>Save data to file with user-specified path</li>
+                    <li>Include bubble sort (no built-in sort command)</li>
+                    <li>Comprehensive input validation using regular expressions</li>
+                    <li>Display results by name order and salary</li>
+                    <li>Show net salary after tax calculations</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Data Structures Needed</div>
+                <div class="code-block"># Car models and average prices (from assignment brief)
+declare -A CAR_PRICES=(
+    ["A"]="31095"     # A class - £24,095 - £38,095 (average £31,095)
+    ["B"]="33162"     # B Class - £28,045 - £38,280 (average £33,162)
+    ["C"]="42537"     # C Class - £34,670 - £50,405 (average £42,537)
+    ["E"]="54437"     # E Class - £39,680 - £69,015 (average £54,437)
+    ["AMG"]="79660"   # AMG C65 - £78,103 - £81,217 (average £79,660)
+)
+
+# Bonus thresholds
+declare -A BONUS_LEVELS=(
+    ["200000"]="10000"
+    ["300000"]="15000"
+    ["400000"]="20000"
+    ["500000"]="25000"
+    ["650000"]="30000"
+)</div>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Tax Calculation Logic</div>
+                <ul>
+                    <li><strong>Personal allowance:</strong> £12,500 (no tax on first £12,500)</li>
+                    <li><strong>Basic rate:</strong> £12,501-£50,000 (20% tax)</li>
+                    <li><strong>Higher rate:</strong> £50,001-£150,000 (40% tax)</li>
+                </ul>
+                <div class="code-block"># Example tax calculation function
+calculate_tax() {
+    local gross_salary=$1
+    local tax=0
+    
+    if (( $(echo "$gross_salary > 50000" | bc -l) )); then
+        # Higher rate tax on amount over £50,000
+        local higher_rate_amount=$(echo "$gross_salary - 50000" | bc -l)
+        local higher_tax=$(echo "$higher_rate_amount * 0.40" | bc -l)
+        
+        # Basic rate tax on £37,500 (£50,000 - £12,500)
+        local basic_tax=$(echo "37500 * 0.20" | bc -l)
+        
+        tax=$(echo "$higher_tax + $basic_tax" | bc -l)
+    elif (( $(echo "$gross_salary > 12500" | bc -l) )); then
+        # Basic rate tax only
+        local taxable_amount=$(echo "$gross_salary - 12500" | bc -l)
+        tax=$(echo "$taxable_amount * 0.20" | bc -l)
+    fi
+    
+    echo $tax
+}</div>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Bonus Structure</div>
+                <table class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Sales Target</th>
+                            <th>Monthly Bonus</th>
+                            <th>Total Monthly Salary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Below £200,000</td>
+                            <td>£0</td>
+                            <td>£2,000 (basic only)</td>
+                        </tr>
+                        <tr>
+                            <td>£200,000+</td>
+                            <td>£10,000</td>
+                            <td>£12,000</td>
+                        </tr>
+                        <tr>
+                            <td>£300,000+</td>
+                            <td>£15,000</td>
+                            <td>£17,000</td>
+                        </tr>
+                        <tr>
+                            <td>£400,000+</td>
+                            <td>£20,000</td>
+                            <td>£22,000</td>
+                        </tr>
+                        <tr>
+                            <td>£500,000+</td>
+                            <td>£25,000</td>
+                            <td>£27,000</td>
+                        </tr>
+                        <tr>
+                            <td>£650,000+</td>
+                            <td>£30,000</td>
+                            <td>£32,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-title">Tax Calculation Logic</div>
+                <ul>
+                    <li><strong>Personal allowance:</strong> £12,500 (no tax on first £12,500)</li>
+                    <li><strong>Basic rate:</strong> £12,501-£50,000 (20% tax)</li>
+                    <li><strong>Higher rate:</strong> £50,001-£150,000 (40% tax)</li>
+                </ul>
+                <div class="code-block"># Example tax calculation function
+calculate_tax() {
+    local gross_salary=$1
+    local tax=0
+    
+    if (( $(echo "$gross_salary > 50000" | bc -l) )); then
+        # Higher rate tax on amount over £50,000
+        local higher_rate_amount=$(echo "$gross_salary - 50000" | bc -l)
+        local higher_tax=$(echo "$higher_rate_amount * 0.40" | bc -l)
+        
+        # Basic rate tax on £37,500 (£50,000 - £12,500)
+        local basic_tax=$(echo "37500 * 0.20" | bc -l)
+        
+        tax=$(echo "$higher_tax + $basic_tax" | bc -l)
+    elif (( $(echo "$gross_salary > 12500" | bc -l) )); then
+        # Basic rate tax only
+        local taxable_amount=$(echo "$gross_salary - 12500" | bc -l)
+        tax=$(echo "$taxable_amount * 0.20" | bc -l)
+    fi
+    
+    echo $tax
+}</div>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Required Inputs</div>
+                <ul>
+                    <li><strong>Month:</strong> Enter the month for calculations</li>
+                    <li><strong>Salesperson name:</strong> Enter each salesperson's name (3-20 people)</li>
+                    <li><strong>Models sold:</strong> Enter which car models and quantities sold</li>
+                    <li><strong>File details:</strong> Specify filename and path for data storage</li>
+                </ul>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Required Outputs</div>
+                <ul>
+                    <li><strong>Name order display:</strong> List all salespersons sorted by name</li>
+                    <li><strong>Salary order display:</strong> List all salespersons sorted by salary</li>
+                    <li><strong>Individual details:</strong> Show name with gross salary, tax, and net salary</li>
+                    <li><strong>Summary statistics:</strong> Total sales, average salary, etc.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Program 4: Blackjack Game -->
+        <div class="content-section" id="program4">
+            <h2>🃏 Program 4: Blackjack Game (blackjack.sh)</h2>
+            <div class="program-card">
+                <div class="program-title">Requirements Analysis</div>
+                <ul>
+                    <li><strong>Core Rules:</strong> Implement full blackjack rules as described in assignment</li>
+                    <li><strong>Players:</strong> Support one dealer and at least one player</li>
+                    <li><strong>Data Structures:</strong> Use arrays for cards, hands, and deck management</li>
+                    <li><strong>Card Management:</strong> Remove dealt cards from deck to prevent duplicates</li>
+                    <li><strong>Functions:</strong> Use functions for game logic and modularity</li>
+                    <li><strong>User Interface:</strong> Make the program user-friendly with clear prompts</li>
+                    <li><strong>Game Flow:</strong> Implement proper turn-based gameplay</li>
+                    <li><strong>Scoring:</strong> Handle Ace values (1 or 11) correctly</li>
+                    <li><strong>Special Cases:</strong> Handle blackjack, bust, push scenarios</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Game Structure Planning</div>
+                <div class="code-block"># Card deck representation
+declare -a DECK
+declare -a PLAYER_HAND
+declare -a DEALER_HAND
+
+# Game functions needed:
+# - initialize_deck()
+# - shuffle_deck()
+# - deal_card()
+# - calculate_hand_value()
+# - player_turn()
+# - dealer_turn()
+# - determine_winner()</div>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Key Game Logic</div>
+                <ol class="step-list">
+                    <li><strong>Card Values:</strong> 2-10 = face value, J/Q/K = 10, A = 1 or 11 (player's choice)</li>
+                    <li><strong>Blackjack:</strong> Ace + 10-value card = 21 (automatic win unless dealer also has blackjack)</li>
+                    <li><strong>Dealer Rules:</strong> Must hit on 16 or less, must stand on 17 or more</li>
+                    <li><strong>Win Conditions:</strong> Player closer to 21 without busting wins</li>
+                    <li><strong>Bust:</strong> Total over 21 results in automatic loss</li>
+                    <li><strong>Push:</strong> Same hand value as dealer results in tie</li>
+                    <li><strong>Five Card Charlie:</strong> Optional bonus for 5 cards without busting</li>
+                </ol>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Game Flow Implementation</div>
+                <ol class="step-list">
+                    <li><strong>Setup:</strong> Initialize deck, shuffle cards, get number of players</li>
+                    <li><strong>Initial Deal:</strong> Deal 2 cards to each player and dealer (dealer has 1 face down)</li>
+                    <li><strong>Check for Blackjack:</strong> Check if any player or dealer has natural 21</li>
+                    <li><strong>Player Turns:</strong> Each player decides to hit or stand</li>
+                    <li><strong>Dealer Turn:</strong> Dealer plays according to rules (hit on 16, stand on 17)</li>
+                    <li><strong>Determine Winners:</strong> Compare hands and determine outcomes</li>
+                    <li><strong>Score Tracking:</strong> Optional points system for multiple rounds</li>
+                </ol>
+            </div>
+
+            <div class="program-card">
+                <div class="program-title">Key Terms & Definitions</div>
+                <ul>
+                    <li><strong>Hit:</strong> Request another card</li>
+                    <li><strong>Stand/Stick:</strong> Keep current hand, no more cards</li>
+                    <li><strong>Bust:</strong> Hand total exceeds 21</li>
+                    <li><strong>Push:</strong> Tie between player and dealer</li>
+                    <li><strong>Blackjack:</strong> Natural 21 with first two cards</li>
+                    <li><strong>Five Card Charlie:</strong> Five cards without busting (optional bonus)</li>
+                    <li><strong>Hole Card:</strong> Dealer's face-down card</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Documentation Requirements -->
+        <div class="content-section" id="documentation">
+            <h2>📚 Documentation Requirements</h2>
+            <div class="program-card">
+                <div class="program-title">For Each Program Create:</div>
+                <ul>
+                    <li><strong>Program Code:</strong> Text file with .sh extension, comprehensive comments, meaningful variable names, proper indentation. Must be in TEXT format, NOT screenshots (required for Turnitin originality checking)</li>
+                    <li><strong>Flowchart:</strong> Visual representation of program flow using Google Docs flowchart symbols, section-based numbering</li>
+                    <li><strong>User Guide:</strong> Text format instructions on how to run the program, inputs needed, expected outputs, clear step-by-step instructions. Must be in TEXT format, NOT screenshots</li>
+                    <li><strong>Technical Description:</strong> Text format explanation of how the code works, focus on algorithms, data structures, key functions. Must be in TEXT format, NOT screenshots</li>
+                    <li><strong>Testing Evidence:</strong> Screenshots showing your personalized prompt, test cases for all scenarios including error conditions, path must show student ID</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Report Formatting Requirements</div>
+                <ul>
+                    <li><strong>Font:</strong> Times New Roman/Cambria for body text, Courier for code</li>
+                    <li><strong>Spacing:</strong> 1.5 for text, single for code, indent new paragraphs, double space between paragraphs</li>
+                    <li><strong>Headings:</strong> Maximum 3 levels, visually distinct, consistent formatting</li>
+                    <li><strong>Images/Tables:</strong> Numbered and titled, images below text, tables above</li>
+                    <li><strong>Numbering:</strong> Section-based (1.1, 1.2 for section 1; 2.1, 2.2 for section 2)</li>
+                    <li><strong>Pages:</strong> All numbered after table of contents, including appendices</li>
+                    <li><strong>Writing Style:</strong> Third person, past tense, left justified</li>
+                    <li><strong>Headings:</strong> Use informative headings, not questions, maximum half page without heading</li>
+                    <li><strong>References:</strong> All appendix items must be referenced in text by page number</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Testing Strategy -->
+        <div class="content-section" id="testing">
+            <h2>🧪 Testing Strategy</h2>
+            <div class="program-card">
+                <div class="program-title">Test Categories for Each Program</div>
+                <ul>
+                    <li><strong>Input Validation Tests</strong>: Valid/invalid/empty/boundary/negative inputs</li>
+                    <li><strong>Functional Tests</strong>: Normal operation, edge cases, error conditions, recovery</li>
+                    <li><strong>Screenshot Requirements</strong>: Show personalized prompt, student ID in path, all test scenarios, expected vs actual results</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="content-section" id="timeline">
+            <h2>⏰ Implementation Timeline</h2>
+            <div class="program-card">
+                <div class="program-title">Week 1: Setup and Program 1</div>
+                <ul>
+                    <li>Set up environment</li>
+                    <li>Create personalized prompt</li>
+                    <li>Implement area.sh</li>
+                    <li>Begin documentation</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Week 2: Program 2 and 3</div>
+                <ul>
+                    <li>Complete bonus.sh</li>
+                    <li>Implement bubble sort</li>
+                    <li>Test thoroughly</li>
+                    <li>Continue documentation</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Week 3: Program 4</div>
+                <ul>
+                    <li>Implement blackjack.sh</li>
+                    <li>Focus on arrays and functions</li>
+                    <li>Complete game logic</li>
+                    <li>Extensive testing</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Week 4: Documentation and Testing</div>
+                <ul>
+                    <li>Complete all documentation</li>
+                    <li>Final testing phase</li>
+                    <li>Screenshots and evidence</li>
+                    <li>Report compilation</li>
+                    <li>Final review</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="content-section" id="checklist">
+            <h2>✅ Final Submission Checklist</h2>
+            <div class="program-card">
+                <div class="program-title">Code Files</div>
+                <ul class="checklist">
+                    <li>area.sh - working and commented</li>
+                    <li>bonus.sh - working and commented</li>
+                    <li>blackjack.sh - working and commented</li>
+                    <li>Personalized prompt in .bashrc</li>
+                    <li>All files executable and tested</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Documentation</div>
+                <ul class="checklist">
+                    <li>Flowcharts for all programs</li>
+                    <li>User guides for all programs</li>
+                    <li>Technical descriptions for all programs</li>
+                    <li>Testing evidence with screenshots</li>
+                    <li>Report with proper formatting</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Quality Assurance</div>
+                <ul class="checklist">
+                    <li>All programs use meaningful variable names</li>
+                    <li>Comprehensive error checking implemented</li>
+                    <li>Functions used appropriately</li>
+                    <li>Code follows style guidelines</li>
+                    <li>Screenshots show personalized prompt</li>
+                </ul>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Submission Requirements</div>
+                <ul class="checklist">
+                    <li>Assignment cover sheet completed</li>
+                    <li>All work in text format (not screenshots)</li>
+                    <li>Student ID visible in screenshots</li>
+                    <li>Files organized properly</li>
+                    <li>Portfolio compiled correctly</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Common Pitfalls -->
+        <div class="content-section" id="pitfalls">
+            <h2>⚠️ Common Pitfalls to Avoid</h2>
+            <ol class="step-list">
+                <li><strong>Screenshots instead of text:</strong> Code must be in text format for Turnitin originality checking</li>
+                <li><strong>Missing personalized prompt:</strong> Must show in ALL screenshots for identification</li>
+                <li><strong>Student ID not visible:</strong> Screenshots must show path with student ID for verification</li>
+                <li><strong>Using built-in sort:</strong> Must implement bubble sort manually - no marks for bash sort command</li>
+                <li><strong>Inadequate error checking:</strong> Must validate ALL user inputs using regular expressions</li>
+                <li><strong>Poor documentation:</strong> Each program needs complete documentation worth 15% of grade</li>
+                <li><strong>Exceeding Python limit:</strong> Maximum 15% Python code per program allowed</li>
+                <li><strong>Using prohibited languages:</strong> No Awk or other embedded languages (sed is allowed)</li>
+                <li><strong>Incomplete testing:</strong> Must test all scenarios including error conditions</li>
+                <li><strong>Missing flowcharts:</strong> Must use Google Docs flowchart symbols</li>
+                <li><strong>Attendance issues:</strong> Students absent during development may need to demonstrate understanding</li>
+                <li><strong>Non-permanent prompt:</strong> Prompt must be in .bashrc or .bash_profile for permanence</li>
+            </ol>
+        </div>
+
+        <!-- Getting Help -->
+        <div class="content-section" id="help">
+            <h2>💡 Getting Help</h2>
+            <div class="program-card">
+                <div class="program-title">Instructor</div>
+                <p>Niresh Dhakal (<a href="mailto:niresh.dhakal@nami.edu.np">niresh.dhakal@nami.edu.np</a>)</p>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Testing</div>
+                <p>Test each program thoroughly before submission</p>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Documentation</div>
+                <p>Follow the provided documentation guidelines exactly</p>
+            </div>
+            <div class="program-card">
+                <div class="program-title">Code Review</div>
+                <p>Have someone else review your code before submission</p>
+            </div>
+            <div class="highlight">
+                <strong>Remember:</strong> This assignment is worth 50% of your module grade. Take time to do it properly, test thoroughly, and document completely.
+            </div>
+        </div>
+
+        <!-- Floating Navigation -->
+        <div class="floating-nav">
+            <a href="#overview">📋 Overview</a>
+            <a href="#setup">⚙️ Setup</a>
+            <a href="#program1">📐 Area Calculator</a>
+            <a href="#program2">💻 Custom Prompt</a>
+            <a href="#program3">💰 Bonus Calculator</a>
+            <a href="#program4">🃏 Blackjack</a>
+            <a href="#documentation">📚 Documentation</a>
+            <a href="#testing">🧪 Testing</a>
+            <a href="#timeline">⏰ Timeline</a>
+            <a href="#checklist">✅ Checklist</a>
+            <a href="#pitfalls">⚠️ Pitfalls</a>
+            <a href="#help">💡 Help</a>
+        </div>
+    </div>
+
+    <script>
+        // Navigation: Show the correct section when a nav-tab is clicked
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active from all tabs
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                // Hide all sections
+                document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+                // Activate clicked tab
+                this.classList.add('active');
+                // Show the corresponding section
+                const sectionId = this.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                if (section) section.classList.add('active');
+            });
+        });
+
+        // Accordion toggle function
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            content.classList.toggle('active');
+            // Toggle plus/minus
+            const span = header.querySelector('span');
+            span.textContent = content.classList.contains('active') ? '-' : '+';
+        }
+
+        // Search filter for topics
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            document.querySelectorAll('.content-section').forEach(section => {
+                if (query === '' || section.textContent.toLowerCase().includes(query)) {
+                    section.style.display = '';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
